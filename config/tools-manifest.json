@@ -1,0 +1,28 @@
+{
+  "project": "School Safe V2",
+  "purpose": "Codex engineering pack",
+  "cacheRoot": "C:\\SchoolSafe\\AI-TOOLS",
+  "repositories": [
+    {"name":"spec-kit","url":"https://github.com/github/spec-kit.git","mode":"clone-once"},
+    {"name":"superpowers","url":"https://github.com/obra/superpowers.git","mode":"clone-once"},
+    {"name":"repomix","url":"https://github.com/yamadashy/repomix.git","mode":"clone-once"},
+    {"name":"agent-orchestrator","url":"https://github.com/Untrivial-ai/agent-orchestrator.git","mode":"clone-once"},
+    {"name":"semgrep","url":"https://github.com/semgrep/semgrep.git","mode":"clone-once"},
+    {"name":"trivy","url":"https://github.com/aquasecurity/trivy.git","mode":"clone-once"},
+    {"name":"betterleaks","url":"https://github.com/betterleaks/betterleaks.git","mode":"clone-once"},
+    {"name":"safe-chain","url":"https://github.com/AikidoSec/safe-chain.git","mode":"clone-once"}
+  ],
+  "projectDependencies": {
+    "runtime": ["@tanstack/react-query", "zod", "react-hook-form"],
+    "development": ["@biomejs/biome", "@playwright/test", "vitest", "msw", "axe-core", "@lhci/cli"]
+  },
+  "conditionalTools": ["shadcn/ui", "Magic UI", "Storybook", "Renovate"],
+  "rules": {
+    "noDirectMain": true,
+    "noForcePush": true,
+    "noProductionDeploy": true,
+    "noProductionSupabaseMutation": true,
+    "reuseExistingDownloads": true,
+    "useWorktreesForParallelAgents": true
+  }
+}
