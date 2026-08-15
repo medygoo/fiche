@@ -1,31 +1,35 @@
 # HANDOFF — Relais entre conversations
 
 ## État au 15 août 2026
-Brain V1 est opérationnel sur `medygoo/fiche/main`. L’intégration initiale a été faite via PR #1 ; le protocole Superpowers Skills a été intégré via PR #2. Les branches de construction sont conservées comme archives de travail.
+Brain V1 est opérationnel. L’audit Phase B, la conception Fondation Production validée et les plans F0→F4 sont intégrés à `medygoo/fiche/main` via PR #4 (`e3322d20b0ef86b9dfb1b861c032c895fa735b54`).
 
-## Ce qui existe maintenant
-- Loi 0 de continuité + Six Lois SchoolSafe.
-- `00-CONTEXT`, `CONTROL-TOWER`, `CURRENT-STATE`, `DECISIONS`, `MASTER-PLAN`, `HANDOFF`.
-- 12 cerveaux spécialisés avec gates.
-- Core tools épinglés : Superpowers, Spec Kit, Repomix, Orca.
-- Protocole obligatoire `protocols/SUPERPOWERS-SKILLS.md` : brainstorming, planification, isolation, TDD/debug, travail parallèle, revue, vérification et finition de branche selon la tâche.
-- Spécialistes manuels : OpenHands, Aider.
-- Registre de risque, registre de versions et release gates.
-- Cycle cerveau → paquet de transfert → staging → validation humaine → production.
-- Bootstrap sûr : aucune dépendance applicative installée par défaut, aucune mise à jour silencieuse d’outil.
-- GitHub Actions de validation uniquement, sans déploiement.
+## F0 exécuté en staging
+- Application : `medygoo/schoolsafemm`.
+- Production toujours : `main` @ `c347bef91b3fdbdca0d2a94e185b5914b5360d8e`.
+- Branche F0 : `staging/foundation-f0`.
+- PR : `schoolsafemm#1`, draft, non fusionnée.
+- Head F0 techniquement validé : `2a4d822256aa1122e30867c835693f65f27ebe5e`.
+- GitHub Actions run `31900150659` : `server-contracts` PASS + `existing-browser-qa` PASS.
+- Scan de secrets : PASS.
+- Aucun fichier `app/` modifié.
+- Workflow Pages identique base/staging : SHA `e1c7851c35db9921a1d9debcc5b4e12a2e711d04`.
+- Revue diff-only PR #1 : aucun Critical/Important.
+- Paquet : `transfers/2026-08-15-foundation-f0.md`.
 
-## Preuve
-- PR #1 : fusionnée ; CI PR PASS ; CI post-fusion PASS.
-- PR #2 : fusionnée ; CI PR PASS ; CI post-fusion PASS.
-- Jalon Brain V1 : `6dd2ca7c790970e1b88c3e092f327d9de1c8c43c`.
-- Jalon Skills : `d7d5b153a32d9cab20dbefbcdff19246be386259`.
+## Ce que F0 fournit
+- workspace Node/TypeScript/Fastify/Vitest ;
+- `/health` et `/ready` ;
+- configuration validée par Zod ;
+- format d’erreur stable + `request_id` ;
+- 12 identifiants de permissions stables ;
+- Playwright verrouillé pour les QA existantes ;
+- CI PR read-only avec typecheck, tests, scan secrets et QA navigateur Windows.
 
-## Application
-`medygoo/schoolsafemm` n’a pas été modifié pendant ces intégrations. Production de référence : `c347bef91b3fdbdca0d2a94e185b5914b5360d8e`.
+## Autorisation
+F0 est techniquement validé mais **non autorisé en production**. Aucun merge `schoolsafemm/main` ne doit être effectué automatiquement.
 
 ## Reprise d’un nouveau chat
-Lire `governance/SCHOOLSAFE-LAWS.md` → `00-CONTEXT.md` → `CONTROL-TOWER.md` → `CURRENT-STATE.md` → ce fichier → `protocols/SUPERPOWERS-SKILLS.md`, puis vérifier GitHub et le SHA courant avant toute écriture.
+Lire `governance/SCHOOLSAFE-LAWS.md` → `00-CONTEXT.md` → `CONTROL-TOWER.md` → `CURRENT-STATE.md` → ce fichier → `protocols/SUPERPOWERS-SKILLS.md` → paquet F0, puis vérifier les SHAs GitHub courants.
 
 ## Prochaine action
-Lancer par le cerveau un audit factuel de `schoolsafemm` pour construire la carte : terminé / partiel / manquant / risqué / prochaine priorité.
+Attendre validation humaine de F0. Après validation : créer `staging/foundation-f1` depuis `2a4d822256aa1122e30867c835693f65f27ebe5e` et exécuter F1 Auth + Access + Bootstrap avec TDD/RLS. Ne pas merger F0 en production par défaut.
