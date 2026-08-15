@@ -1,0 +1,33 @@
+name: Validate SchoolSafe Brain
+
+on:
+  push:
+    branches:
+      - main
+      - brain-v1-governance-2026-08-15
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  brain-governance:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate Brain constitution and configuration
+        shell: pwsh
+        run: ./scripts/validate-brain.ps1
+
+      - name: Ensure no production deployment workflow is introduced by Brain validation
+        shell: pwsh
+        run: |
+          $workflow = Get-Content .github/workflows/brain-validation.yml -Raw
+          if ($workflow -match 'deploy-pages|supabase db push|ssh .*@|kubectl apply') {
+            throw 'Brain validation workflow must never deploy or mutate production.'
+          }
+          Write-Host 'Brain CI is validation-only.'
