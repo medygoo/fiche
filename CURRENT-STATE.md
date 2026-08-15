@@ -1,32 +1,31 @@
 # État actuel — SchoolSafe
 
 ## Application réelle
-- Dépôt : `medygoo/schoolsafemm`
-- Branche production : `main`
-- Commit vérifié : `c347bef91b3fdbdca0d2a94e185b5914b5360d8e`
-- Frontend publié depuis `app/` par GitHub Pages.
-- Harmonisation visuelle V3 active dans l’espace interne.
-- Aucun fichier de l’application n’a été modifié pendant l’intégration Brain V1 et des Skills.
+- Dépôt : `medygoo/schoolsafemm`.
+- Branche production : `main`.
+- Commit production vérifié : `c347bef91b3fdbdca0d2a94e185b5914b5360d8e`.
+- GitHub Pages publie toujours `app/` ; aucun changement F0 n’a été fusionné en production.
+- Harmonisation visuelle V3 inchangée.
 
 ## Cerveau
-- Dépôt : `medygoo/fiche`
-- Brain V1 intégré via PR #1 ; jalon d’intégration `6dd2ca7c790970e1b88c3e092f327d9de1c8c43c`.
-- Superpowers Skills intégrés via PR #2 ; jalon `d7d5b153a32d9cab20dbefbcdff19246be386259`.
-- Branches de construction conservées : `brain-v1-governance-2026-08-15` et `brain-v1-skills-protocol-2026-08-15`.
-- Loi 0 + Six Lois installées.
-- Mémoire compacte et tour de contrôle installées.
-- 12 agents spécialisés catalogués.
-- Superpowers, Spec Kit, Repomix et Orca sont les quatre outils core épinglés.
-- OpenHands et Aider sont des spécialistes manuels.
-- `protocols/SUPERPOWERS-SKILLS.md` rend la sélection des Skills obligatoire quand ils sont disponibles.
-- Sécurité, staging, paquet de transfert, release gates, versioning et registre de risques sont installés.
-- Bootstrap rendu non destructif par défaut.
-- GitHub Actions valide automatiquement la Constitution et la sécurité de son propre workflow.
+- Dépôt : `medygoo/fiche`.
+- Brain V1, Loi 0, Six Lois, 12 agents, outils core et protocole Superpowers actifs.
+- Audit Phase B + conception Fondation Production + plans maître/F0/F1/F2/F3/F4 intégrés à `main` via PR #4, merge `e3322d20b0ef86b9dfb1b861c032c895fa735b54`.
 
-## Validation
-- PR #1 : fusionnée ; CI PR PASS ; CI post-fusion PASS.
-- PR #2 : fusionnée ; CI PR PASS ; CI post-fusion PASS.
-- Le SHA courant de `main` doit être relu sur GitHub avant toute nouvelle écriture.
+## Fondation Production — F0
+- Branche application : `staging/foundation-f0`.
+- PR application : `medygoo/schoolsafemm#1`, draft, non fusionnée.
+- Base : `c347bef91b3fdbdca0d2a94e185b5914b5360d8e`.
+- Head validé techniquement : `2a4d822256aa1122e30867c835693f65f27ebe5e`.
+- Implémenté : service Node/TypeScript minimal, `/health`, `/ready`, validation env, contrat d’erreur + `request_id`, catalogue de 12 permissions, Vitest, Playwright verrouillé, CI serveur + QA navigateur + scan secrets.
+- GitHub Actions final : run `31900150659`, jobs `server-contracts` PASS et `existing-browser-qa` PASS.
+- Diff F0 : aucun fichier `app/` modifié ; `.github/workflows/static.yml` inchangé SHA `e1c7851c35db9921a1d9debcc5b4e12a2e711d04`.
+- Paquet de transfert : `transfers/2026-08-15-foundation-f0.md`.
+
+## Autorisation
+- F0 est `F0_TECHNICALLY_VALIDATED`.
+- Production : NON AUTORISÉE.
+- F1 ne démarre qu’après validation humaine explicite de F0.
 
 ## Prochain jalon
-Auditer `medygoo/schoolsafemm` via Brain V1 afin d’établir la carte officielle : terminé / partiel / manquant / risqué / prochaine priorité. Aucune nouvelle modification applicative importante ne commence avant cet audit.
+Après validation humaine, créer `staging/foundation-f1` depuis le head F0 approuvé et exécuter le plan Auth + Access + Bootstrap. Ne pas merger automatiquement F0 dans `schoolsafemm/main`.

@@ -16,3 +16,12 @@
 
 ## 2026-08-15 — Outils externes contrôlés
 **Décision :** les dépôts externes sont référencés et épinglés/revus ; ils ne sont pas copiés dans le code métier et ne se mettent pas à jour silencieusement.
+
+## 2026-08-15 — Fondation Production avant nouveaux gros modules
+**Décision :** transformer d’abord la V2 frontend en socle persistant/sécurisé via F0→F4 avant tout nouveau développement métier majeur.
+**Architecture validée :** PWA existante + Supabase Auth + PostgreSQL/RLS + service SchoolSafe côté VPS + R2 signé + Web Push, avec tests et staging.
+**Conséquence :** aucun raccordement direct improvisé de `app.js` à la production.
+
+## 2026-08-15 — F0 reste staging jusqu’au gate humain
+**Décision :** F0 est construit sur `staging/foundation-f0`; sa réussite technique n’autorise pas un merge `schoolsafemm/main`.
+**Conséquence :** après validation humaine, F1 dérive du head F0 approuvé sur une nouvelle branche de staging. La production reste inchangée tant qu’une autorisation explicite de transfert n’est pas donnée.

@@ -1,46 +1,53 @@
 # CONTROL TOWER — SchoolSafe
 
-**Brain:** V1 — ACTIF sur `main`
+**Brain:** V1 — ACTIF
 **Brain repo:** `medygoo/fiche`
-**Brain V1 intégration initiale:** PR #1, commit `6dd2ca7c790970e1b88c3e092f327d9de1c8c43c`
-**Superpowers Skills intégrés:** PR #2, commit `d7d5b153a32d9cab20dbefbcdff19246be386259`
-**Branches conservées:** `brain-v1-governance-2026-08-15`, `brain-v1-skills-protocol-2026-08-15`
+**Fondation plans intégrés:** PR #4, merge `e3322d20b0ef86b9dfb1b861c032c895fa735b54`
 **Application repo:** `medygoo/schoolsafemm`
 **Production branch:** `main`
 **Production commit vérifié:** `c347bef91b3fdbdca0d2a94e185b5914b5360d8e`
-**Production état:** GitHub Pages en ligne avec harmonisation visuelle V3 publiée le 15 août 2026.
+**Production état:** GitHub Pages V3 inchangée.
 
 ## Travail courant
-Brain V1 est opérationnel. La Constitution, la mémoire durable, les 12 agents, les outils approuvés, le staging/transfert, le versioning, les registres de risque et les validateurs GitHub sont actifs. `protocols/SUPERPOWERS-SKILLS.md` impose la sélection des Skills adaptée à chaque tâche.
+Fondation Production F0 exécutée en staging uniquement.
+
+- Branche : `staging/foundation-f0`
+- PR : `schoolsafemm#1` — draft / non fusionnée
+- Head : `2a4d822256aa1122e30867c835693f65f27ebe5e`
+- Paquet : `transfers/2026-08-15-foundation-f0.md`
+- Statut : `F0_TECHNICALLY_VALIDATED`
 
 ## Preuves actuelles
-- PR #1 Brain V1 : fusionnée, CI PR PASS, CI post-fusion PASS.
-- PR #2 Superpowers Skills : fusionnée, CI PR PASS, CI post-fusion PASS.
-- Validation Constitution/configuration : PASS.
-- Validation sécurité du workflow : PASS.
-- Outils core épinglés : Superpowers, Spec Kit, Repomix, Orca.
-- Agents catalogués : 12.
-- Application réelle non modifiée par l’intégration du cerveau.
-
-## Prochaine priorité
-Utiliser Brain V1 pour auditer factuellement `medygoo/schoolsafemm` et construire la carte : terminé / partiel / manquant / risqué / prochaine priorité, avant tout nouveau gros développement.
+- TDD RED→GREEN appliqué aux contrats health, env, errors, permissions et readiness.
+- GitHub Actions `31900150659` : `server-contracts` PASS.
+- GitHub Actions `31900150659` : `existing-browser-qa` PASS.
+- Scan de secrets privilégiés : PASS.
+- Revue F0 : aucun Critical/Important.
+- Diff base→F0 : aucun fichier `app/` modifié.
+- Workflow production Pages base/staging : même SHA `e1c7851c35db9921a1d9debcc5b4e12a2e711d04`.
 
 ## Gates
 - Contexte : PASS
-- Architecture/spec Brain : PASS
-- Plan Brain : PASS
-- Agents : PASS
-- Skills Superpowers : PASS / ACTIFS
-- Tests/validation cerveau : PASS
-- Sécurité du workflow : PASS
-- Intégration Brain `main` : PASS
-- Transfert application : BLOQUÉ tant qu’aucun changement applicatif spécifique n’est approuvé
+- Audit Phase B : PASS
+- Conception Fondation : APPROUVÉE
+- Plan F0→F4 : PASS / intégré Brain main
+- F0 contrats/service : PASS
+- F0 typecheck/tests : PASS
+- F0 sécurité/secrets : PASS
+- F0 QA navigateur : PASS
+- F0 revue : PASS
+- F0 validation humaine : EN ATTENTE
+- F1 : BLOQUÉ jusqu’à validation humaine F0
+- Production application : BLOQUÉE / NON AUTORISÉE
+
+## Prochaine priorité
+Après validation humaine de F0, créer `staging/foundation-f1` depuis le head F0 approuvé et exécuter Auth + Access + Bootstrap sans toucher à `schoolsafemm/main`.
 
 ## Règle de fraîcheur
-Le SHA courant de `main` doit toujours être revérifié sur GitHub au début d’un nouveau travail ; ce fichier enregistre des jalons stables, pas une hypothèse sur la tête actuelle de branche.
+Revérifier toujours les SHAs GitHub avant écriture. Les valeurs ci-dessus sont des jalons de preuve, pas une permission implicite de déploiement.
 
 ## Risque principal
-Confondre le cerveau et l’application. Tout agent doit vérifier le dépôt cible avant toute écriture.
+Ne jamais confondre validation technique de staging avec autorisation production.
 
-## Dernier transfert vers l’application
-Harmonisation visuelle V3, commit production `c347bef91b3fdbdca0d2a94e185b5914b5360d8e`.
+## Dernier transfert production
+Harmonisation visuelle V3 : `c347bef91b3fdbdca0d2a94e185b5914b5360d8e`.
