@@ -6,27 +6,28 @@
 - Commit vérifié : `c347bef91b3fdbdca0d2a94e185b5914b5360d8e`
 - Frontend publié depuis `app/` par GitHub Pages.
 - Harmonisation visuelle V3 active dans l’espace interne.
-- Aucun fichier de l’application n’a été modifié pendant l’intégration Brain V1 et des Skills.
+- Production inchangée pendant F0.
 
 ## Cerveau
 - Dépôt : `medygoo/fiche`
-- Brain V1 intégré via PR #1 ; jalon d’intégration `6dd2ca7c790970e1b88c3e092f327d9de1c8c43c`.
-- Superpowers Skills intégrés via PR #2 ; jalon `d7d5b153a32d9cab20dbefbcdff19246be386259`.
-- Branches de construction conservées : `brain-v1-governance-2026-08-15` et `brain-v1-skills-protocol-2026-08-15`.
-- Loi 0 + Six Lois installées.
-- Mémoire compacte et tour de contrôle installées.
-- 12 agents spécialisés catalogués.
-- Superpowers, Spec Kit, Repomix et Orca sont les quatre outils core épinglés.
-- OpenHands et Aider sont des spécialistes manuels.
-- `protocols/SUPERPOWERS-SKILLS.md` rend la sélection des Skills obligatoire quand ils sont disponibles.
-- Sécurité, staging, paquet de transfert, release gates, versioning et registre de risques sont installés.
-- Bootstrap rendu non destructif par défaut.
-- GitHub Actions valide automatiquement la Constitution et la sécurité de son propre workflow.
+- Brain V1, Loi 0, Six Lois, Skills Superpowers, mémoire compacte, agents spécialisés, staging et transfer package opérationnels.
+- Branche de travail Fondation Production : `brain-audit-fondation-production-2026-08-15`.
+- PR cerveau #4 contient l’audit Phase B, la conception Fondation Production validée et les plans F0 → F4.
 
-## Validation
-- PR #1 : fusionnée ; CI PR PASS ; CI post-fusion PASS.
-- PR #2 : fusionnée ; CI PR PASS ; CI post-fusion PASS.
-- Le SHA courant de `main` doit être relu sur GitHub avant toute nouvelle écriture.
+## Fondation Production
+### F0 — contrats, tests et gates
+- Branche application : `staging/foundation-f0`.
+- Base : `c347bef91b3fdbdca0d2a94e185b5914b5360d8e`.
+- Head candidat : `2a4d822256aa1122e30867c835693f65f27ebe5e`.
+- PR application : `medygoo/schoolsafemm#1`, draft.
+- Diff : 17 commits devant `main`, 0 derrière.
+- Ajouts : workspace Node/TypeScript, service Fastify F0, validation env, contrat d’erreur, health/readiness, permissions, CI PR et lockfile.
+- Aucun fichier visuel existant `app/` modifié ; workflow Pages de production inchangé.
+- CI finale `SchoolSafe CI` run `31900150659` : SUCCESS.
+- Jobs `server-contracts` et `existing-browser-qa` : SUCCESS.
+- Revue Backend/Testing/Security : PASS pour le périmètre F0.
+- Paquet de transfert : `transfers/2026-08-15-foundation-f0.md`.
+- Production : NON AUTORISÉE ; attendre validation humaine du gate F0.
 
 ## Prochain jalon
-Auditer `medygoo/schoolsafemm` via Brain V1 afin d’établir la carte officielle : terminé / partiel / manquant / risqué / prochaine priorité. Aucune nouvelle modification applicative importante ne commence avant cet audit.
+Après validation humaine de F0 : conserver F0 comme staging validé puis préparer F1 Auth + RLS + bootstrap sur une nouvelle branche isolée. Ne pas fusionner `schoolsafemm/main` implicitement.
