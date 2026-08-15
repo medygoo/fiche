@@ -38,6 +38,8 @@ Cette Fondation couvre plusieurs sous-systèmes. Elle ne doit pas être impléme
 
 Chaque lot a son propre gate, ses propres tests et son propre paquet de transfert. Ne commencer le lot suivant qu’après validation du lot précédent dans staging.
 
+**Important :** ce document est un plan d’exécution, pas une autorisation d’exécution. Le passage de la branche Cerveau vers une branche de `schoolsafemm` intervient seulement après choix explicite du mode d’exécution et création d’un workspace isolé conformément aux Lois SchoolSafe.
+
 ## Carte de fichiers cible
 
 ### Racine applicative
