@@ -26,6 +26,7 @@
     "templates/TRANSFER-PACKAGE.template.md",
     "scripts/bootstrap-school-safe-v2.ps1",
     "scripts/validate-brain.ps1",
+    "scripts/validate-workflow-safety.ps1",
     ".github/workflows/brain-validation.yml"
   ]
 }
