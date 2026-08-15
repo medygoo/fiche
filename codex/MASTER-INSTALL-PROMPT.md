@@ -1,192 +1,102 @@
-# MASTER INSTALL PROMPT — School Safe V2
+# MASTER PROMPT — SchoolSafe Brain V1
 
-Tu travailles sur le dépôt local **School Safe V2**.
+Tu travailles avec **deux dépôts distincts** :
+- cerveau : `medygoo/fiche` ;
+- application réelle : `medygoo/schoolsafemm`.
 
-Ta mission est d’installer et configurer le **School Safe V2 Codex Engineering Pack** sans casser le projet existant.
+## Étape 0 — Autorité et continuité
 
-## Règles de sécurité obligatoires
+Avant toute autre action, lis entièrement :
+1. `governance/SCHOOLSAFE-LAWS.md`
+2. `00-CONTEXT.md`
+3. `CONTROL-TOWER.md`
+4. `CURRENT-STATE.md`
+5. `HANDOFF.md`
+6. `config/approved-tools.json`
+7. `agents/agent-catalog.json`
 
-1. Ne jamais travailler directement sur `main`/`master` si une modification est nécessaire.
-2. Ne jamais supprimer les modifications locales existantes.
-3. Ne jamais utiliser `git reset --hard`.
-4. Ne jamais forcer un push.
-5. Ne jamais déployer automatiquement.
-6. Ne jamais modifier Supabase de production, le VPS, Auth, RLS ou Storage pendant l’installation.
-7. Réutiliser les outils déjà présents ; ne pas installer en double.
-8. Préférer les versions stables et les méthodes d’installation actuellement recommandées par les dépôts officiels.
-9. Si une installation échoue à cause du réseau, conserver l’état, noter l’étape et reprendre sans recommencer les téléchargements déjà réussis.
-10. Ne pas copier intégralement les dépôts externes dans le code métier School Safe V2.
+Si l’état Git réel contredit ces documents, **GitHub vérifié prime** et tu mets les documents de continuité à jour avant de continuer.
 
-## Étape A — État du projet
+## Étape 1 — Préflight sans mutation
 
-Effectue un contrôle court :
-- `git status --short` ;
+Dans le projet cible :
+- vérifie le dépôt distant ;
 - branche actuelle ;
-- gestionnaire de paquets ;
-- stack détectée ;
-- outils/Skills/MCP déjà présents.
+- commit HEAD ;
+- `git status --short` ;
+- stack et gestionnaire de paquets ;
+- fichiers AGENTS/instructions existants ;
+- secrets/configurations à ne jamais exposer.
 
-Évite les scans récursifs inutiles ou répétés qui ralentissent OneDrive. Si le dépôt est encore dans OneDrive et que les accès sont très lents, recommande la copie locale `C:\SchoolSafe\schoolsafe-v2` mais ne supprime jamais l’original.
+Ne modifie rien pendant ce préflight.
 
-## Étape B — Protection Git
+## Étape 2 — Cerveau d’abord
 
-Si le dépôt est propre ou si les modifications locales peuvent être préservées sans conflit :
-- créer une branche de travail `chore/school-safe-v2-engineering-pack` ou un nom horodaté ;
-- préférer un worktree isolé pour les changements d’outillage.
+Toute nouvelle modification importante doit d’abord avoir :
+- contexte vérifié ;
+- spec ;
+- critères d’acceptation ;
+- plan ;
+- branche/worktree isolée ;
+- agents responsables ;
+- stratégie de test et rollback.
 
-Ne commit pas les modifications métier antérieures de l’utilisateur avec celles du pack.
+Utilise Superpowers et Spec Kit selon leur rôle. Utilise Repomix uniquement pour créer un contexte ciblé, en excluant secrets et données sensibles.
 
-## Étape C — Cache local des outils
+## Étape 3 — Outils approuvés
 
-Utilise `C:\SchoolSafe\AI-TOOLS` comme cache persistant. Clone en `--depth 1` les dépôts manquants uniquement :
+`config/approved-tools.json` est la source de vérité. Les outils core sont épinglés à des commits approuvés. Ne remplace jamais une référence silencieusement.
 
-- https://github.com/github/spec-kit
-- https://github.com/obra/superpowers
-- https://github.com/yamadashy/repomix
-- https://github.com/Untrivial-ai/agent-orchestrator
-- https://github.com/semgrep/semgrep
-- https://github.com/aquasecurity/trivy
-- https://github.com/betterleaks/betterleaks
-- https://github.com/AikidoSec/safe-chain
+Pour préparer l’environnement, commence par :
 
-Si un dossier existe déjà, vérifie-le et réutilise-le au lieu de recloner.
-
-## Étape D — Méthode et contexte Codex
-
-Configurer ou intégrer :
-- Superpowers ;
-- GitHub Spec Kit avec intégration Codex/Skills si supportée par la version actuelle ;
-- Repomix / repomix-explorer ;
-- AGENTS.md de School Safe V2.
-
-Les agents cibles :
-- Architect Agent
-- UI/UX Agent
-- Frontend Agent
-- Backend/Supabase Agent
-- Database/RLS Agent
-- Testing Agent
-- Security Agent
-- Performance Agent
-- Accessibility Agent
-- Code Review Agent
-- Documentation Agent
-- Integration Agent
-
-Chaque agent doit travailler dans une branche/worktree isolé lorsqu’il modifie du code en parallèle.
-
-## Étape E — Design et frontend
-
-Analyser l’existant avant toute initialisation.
-
-Configurer uniquement si compatible et sans remplacer le design School Safe V2 :
-- shadcn/ui ;
-- Magic UI ;
-- Storybook ;
-- `@tanstack/react-query` ;
-- `zod` ;
-- `react-hook-form` ;
-- Biome.
-
-Ne réécris pas les formulaires ou composants existants uniquement pour adopter une nouvelle bibliothèque.
-
-Créer/maintenir `docs/design/DESIGN-SYSTEM.md` avec règles de composants, tableaux, formulaires, responsive et accessibilité.
-
-## Étape F — Tests
-
-Configurer selon la stack existante :
-- Playwright ;
-- Vitest ;
-- MSW ;
-- axe-core ;
-- Storybook tests si pertinent.
-
-Organisation cible :
-
-```text
-tests/
-  unit/
-  integration/
-  e2e/
-  accessibility/
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\bootstrap-school-safe-v2.ps1 -TargetProject "C:\SchoolSafe\schoolsafe-v2" -DryRun
 ```
 
-Créer des smoke tests non destructifs. Ne jamais utiliser les données réelles de production.
+Puis, après lecture du plan :
 
-## Étape G — Sécurité
-
-Configurer progressivement :
-- Semgrep ;
-- Trivy ;
-- Betterleaks ;
-- Aikido Safe Chain.
-
-Avant d’exécuter un scanner, exclure `.env`, credentials, caches et sorties pouvant exposer des secrets. Aucun secret réel ne doit être commité.
-
-## Étape H — Performance et maintenance
-
-Configurer :
-- Lighthouse CI ;
-- Renovate avec mises à jour majeures jamais auto-fusionnées.
-
-## Étape I — Agent Orchestrator
-
-Lire le README local cloné avant installation. Utiliser la méthode actuelle recommandée par le projet pour Windows. Ne pas utiliser un ancien paquet legacy si le dépôt le déconseille.
-
-Si une confirmation graphique Windows est nécessaire, préparer l’étape puis attendre l’utilisateur au lieu de contourner la confirmation.
-
-## Étape J — CI
-
-Créer/améliorer la CI sans déploiement production automatique :
-
-```text
-install
-→ typecheck
-→ lint
-→ unit tests
-→ build
-→ security scans
-→ e2e smoke
-→ accessibility
-→ lighthouse
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\bootstrap-school-safe-v2.ps1 -TargetProject "C:\SchoolSafe\schoolsafe-v2"
 ```
 
-Ne remplace pas brutalement les workflows existants ; fusionne les contrôles proprement.
+Le mode par défaut ne modifie aucune dépendance du projet. Orca s’active avec `-InstallMultiAgent`. OpenHands/Aider sont manuels. Les outils de sécurité marqués `stable-release-required` nécessitent une revue de version avant installation.
 
-## Étape K — Vérification finale
+## Étape 4 — Agents
 
-Exécute les contrôles disponibles :
-- typecheck ;
-- lint ;
-- tests ;
-- build ;
-- Playwright smoke ;
-- sécurité ;
-- `git diff --check` ;
-- `git status --short`.
+Flux recommandé :
 
-Corrige seulement les erreurs introduites par le pack.
+`Context Keeper → Architect → Product/Workflow → spécialistes → Testing → Security → Performance/Accessibility → Reviewer → Integration`.
 
-## Rapport final
+Un agent = une branche/worktree lorsqu’il écrit. Deux agents ne modifient pas simultanément le même fichier sans contrat explicite.
 
-Créer `docs/codex-bootstrap/FINAL-REPORT.md` avec :
-- outil ;
-- statut installé/non installé ;
-- version ;
-- méthode ;
-- fichiers ajoutés/modifiés ;
-- vérifications réussies/échouées ;
-- étapes manuelles restantes ;
-- risques ;
-- prochaine commande recommandée.
+## Étape 5 — Application réelle
 
-À l’écran, termine uniquement par :
+Ne travaille jamais directement sur `main` de `medygoo/schoolsafemm` pour un changement important.
 
-```text
-INSTALLÉ
-NON INSTALLÉ
-ERREURS
-MULTI-AGENTS
-PRÊT À UTILISER
-PROCHAINE ACTION
-```
+Un changement approuvé par le cerveau produit le paquet défini dans `protocols/TRANSFER-PACKAGE.md`, puis suit `protocols/STAGING.md`.
+
+**Sans validation humaine explicite :**
+- aucun merge vers production ;
+- aucun déploiement ;
+- aucune migration Supabase production ;
+- aucune mutation VPS/Auth/RLS/Storage production.
+
+## Étape 6 — Preuve
+
+Avant de déclarer une tâche terminée :
+- vérifier le diff réel ;
+- exécuter les tests applicables ;
+- effectuer la revue sécurité/qualité selon l’impact ;
+- faire relire par Reviewer ;
+- vérifier `git diff --check` et l’état Git ;
+- préparer rollback et paquet de transfert.
+
+## Étape 7 — Handoff
+
+À chaque jalon important, mettre à jour :
+- `CURRENT-STATE.md` ;
+- `HANDOFF.md` ;
+- `DECISIONS.md` si une décision durable a changé ;
+- `CONTROL-TOWER.md` si version, risque ou priorité change.
+
+Le but est qu’un nouveau chat puisse reprendre correctement sans relire tout l’historique.
