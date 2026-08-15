@@ -23,11 +23,6 @@ jobs:
         shell: pwsh
         run: ./scripts/validate-brain.ps1
 
-      - name: Ensure no production deployment workflow is introduced by Brain validation
+      - name: Validate Brain workflow safety
         shell: pwsh
-        run: |
-          $workflow = Get-Content .github/workflows/brain-validation.yml -Raw
-          if ($workflow -match 'deploy-pages|supabase db push|ssh .*@|kubectl apply') {
-            throw 'Brain validation workflow must never deploy or mutate production.'
-          }
-          Write-Host 'Brain CI is validation-only.'
+        run: ./scripts/validate-workflow-safety.ps1
