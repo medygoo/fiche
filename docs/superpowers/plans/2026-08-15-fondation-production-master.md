@@ -46,7 +46,7 @@ Chaque lot a son propre gate, ses propres tests et son propre paquet de transfer
 - `package-lock.json` — versions exactes des dépendances.
 - `.env.example` — noms de variables sans aucune valeur secrète.
 - `.github/workflows/ci.yml` — validation PR sans déploiement production.
-- `.github/workflows/staging.yml` — staging uniquement, séparé du workflow Pages de production.
+- `.github/workflows/staging.yml` — futur transport du candidat validé vers un environnement staging séparé, uniquement après approbation de sa cible d’infrastructure.
 
 ### Service SchoolSafe
 
@@ -68,12 +68,13 @@ Chaque lot a son propre gate, ses propres tests et son propre paquet de transfer
 ### Base
 
 - `supabase/config.toml` — configuration locale/test.
-- `supabase/migrations/` — migrations ordonnées et réversibles par nouvelle migration compensatoire.
+- `supabase/migrations/` — migrations ordonnées ; rollback de production uniquement par migration compensatoire validée.
 - `supabase/seed.sql` — données synthétiques déterministes de test.
-- `tests/rls/` — scénarios d’accès autorisé et refusé.
+- `tests/rls/` — scénarios d’accès autorisé et refusé exécutés sur Supabase local.
 
 ### PWA
 
+- `app/runtime-config.js` — valeurs publiques de runtime, démo par défaut dans Git.
 - `app/clients/runtime-config.js` — lecture de configuration publique.
 - `app/clients/auth-client.js` — session frontend.
 - `app/clients/bootstrap-client.js` — contexte serveur.
@@ -118,7 +119,7 @@ Run:
 ```bash
 node app/server.mjs
 ```
-Puis exécuter les QA existants lorsque Playwright/Chrome est disponible. Si le baseline échoue, arrêter et diagnostiquer avant F0.
+Puis exécuter les QA existantes selon le plan F0. Si le baseline échoue, arrêter et diagnostiquer avant F0.
 
 ### Task 2: Exécuter F0 — contrats et preuve automatisée
 
@@ -126,13 +127,13 @@ Puis exécuter les QA existants lorsque Playwright/Chrome est disponible. Si le 
 
 **Interfaces:**
 - Consumes: frontend V2 intact.
-- Produces: format d’erreur, permission IDs, environnement de test, CI PR, service minimal `/health` et `/ready`.
+- Produces: format d’erreur, permission IDs, environnement de test, CI PR, service minimal `/health` et `/ready`, scripts E2E existants rendus bloquants.
 
 - [ ] Exécuter entièrement le plan F0 avec TDD.
 - [ ] Produire le paquet de transfert F0.
-- [ ] Exécuter tests unitaires, validation configuration et scan secrets.
+- [ ] Exécuter tests unitaires, typecheck, QA navigateur existante et scan secrets.
 - [ ] Revue indépendante du diff F0.
-- [ ] Staging F0 ; aucun merge production.
+- [ ] Staging technique F0 ; aucun merge production.
 
 ### Task 3: Exécuter F1 — Auth, RLS et bootstrap
 
@@ -140,11 +141,11 @@ Puis exécuter les QA existants lorsque Playwright/Chrome est disponible. Si le 
 
 **Interfaces:**
 - Consumes: contrats F0.
-- Produces: identité réelle de test, rôle/permissions/scopes côté serveur, RLS de fondation et `POST /session/bootstrap`.
+- Produces: Supabase local de test, identité réelle de test, rôle/permissions/scopes côté serveur, RLS de fondation et `POST /session/bootstrap`.
 
 - [ ] Exécuter entièrement le plan F1 avec TDD et tests RLS négatifs.
 - [ ] Prouver qu’un rôle forgé par le navigateur n’accorde aucun droit.
-- [ ] Prouver que le sélecteur de rôle est inactif hors mode démo.
+- [ ] Prouver que le sélecteur de rôle est inactif comme autorité hors mode démo.
 - [ ] Staging F1 et revue humaine avant F2.
 
 ### Task 4: Exécuter F2 — élèves, familles, classes et personnes autorisées
@@ -198,32 +199,46 @@ Puis exécuter les QA existants lorsque Playwright/Chrome est disponible. Si le 
 - Consumes: preuves F0–F4.
 - Produces: décision `foundation-ready-for-module-integration` ou liste explicite de blocages.
 
-- [ ] **Step 1: Lancer la suite complète**
+- [ ] **Step 1: Lancer la suite serveur et RLS**
 
 Run:
 ```bash
 npm ci
-npm run lint
+npm run build:auth-sdk
 npm run typecheck
 npm test
+npm run supabase:start
+npm run supabase:reset
 npm run test:rls
-npm run test:e2e:staging
 ```
 Expected: exit code 0 pour chaque commande.
 
-- [ ] **Step 2: Vérifier sécurité**
+- [ ] **Step 2: Lancer la preuve navigateur**
+
+Régression locale :
+```bash
+npm run test:e2e:existing
+```
+
+Candidat staging réellement déployé : définir `SCHOOLSAFE_URL` vers l’URL staging puis exécuter :
+```bash
+npm run test:e2e:staging
+```
+Expected: exit 0. Si aucune cible staging en ligne n’a encore été autorisée/provisionnée, le gate reste bloqué ici ; un artifact CI n’est pas présenté comme un staging en ligne.
+
+- [ ] **Step 3: Vérifier sécurité**
 
 Exécuter les scanners approuvés du Cerveau et vérifier manuellement l’absence de `service_role`, secret R2, clé privée VAPID et données réelles dans les artifacts/logs.
 
-- [ ] **Step 3: Vérifier les critères de la spec**
+- [ ] **Step 4: Vérifier les critères de la spec**
 
 Checklist obligatoire : authentification réelle de test, rôles serveur, refus RLS, parent isolé, pédagogie sans montants, idempotence, conflit préservé, R2 signé, Push rattaché, staging distinct de production.
 
-- [ ] **Step 4: Produire le paquet de transfert**
+- [ ] **Step 5: Produire le paquet de transfert**
 
 Inclure base SHA, head SHA, fichiers, migrations, résultats de tests, risques, rollback et captures de staging utiles.
 
-- [ ] **Step 5: Arrêter au gate humain**
+- [ ] **Step 6: Arrêter au gate humain**
 
 Ne pas merger/déployer en production. Présenter le staging et attendre l’autorisation explicite.
 
