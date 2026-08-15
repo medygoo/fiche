@@ -1,18 +1,30 @@
 {
   "project": "School Safe V2",
-  "purpose": "Codex engineering pack",
+  "purpose": "SchoolSafe Brain engineering pack",
+  "constitution": "governance/SCHOOLSAFE-LAWS.md",
+  "approvedTools": "config/approved-tools.json",
   "cacheRoot": "C:\\SchoolSafe\\AI-TOOLS",
-  "repositories": [
-    {"name":"spec-kit","url":"https://github.com/github/spec-kit.git","mode":"clone-once"},
-    {"name":"superpowers","url":"https://github.com/obra/superpowers.git","mode":"clone-once"},
-    {"name":"repomix","url":"https://github.com/yamadashy/repomix.git","mode":"clone-once"},
-    {"name":"agent-orchestrator","url":"https://github.com/Untrivial-ai/agent-orchestrator.git","mode":"clone-once"},
-    {"name":"semgrep","url":"https://github.com/semgrep/semgrep.git","mode":"clone-once"},
-    {"name":"trivy","url":"https://github.com/aquasecurity/trivy.git","mode":"clone-once"},
-    {"name":"betterleaks","url":"https://github.com/betterleaks/betterleaks.git","mode":"clone-once"},
-    {"name":"safe-chain","url":"https://github.com/AikidoSec/safe-chain.git","mode":"clone-once"}
-  ],
+  "memory": {
+    "startup": [
+      "00-CONTEXT.md",
+      "CONTROL-TOWER.md",
+      "CURRENT-STATE.md",
+      "HANDOFF.md"
+    ],
+    "durable": [
+      "DECISIONS.md",
+      "MASTER-PLAN.md"
+    ]
+  },
+  "bootstrap": {
+    "defaultTools": ["superpowers", "spec-kit", "repomix"],
+    "multiAgentTools": ["orca"],
+    "specialistTools": ["openhands", "aider"],
+    "securityTools": ["semgrep", "trivy", "gitleaks", "safe-chain"],
+    "projectDependencyInstallByDefault": false
+  },
   "projectDependencies": {
+    "advisoryOnly": true,
     "runtime": ["@tanstack/react-query", "zod", "react-hook-form"],
     "development": ["@biomejs/biome", "@playwright/test", "vitest", "msw", "axe-core", "@lhci/cli"]
   },
@@ -22,7 +34,10 @@
     "noForcePush": true,
     "noProductionDeploy": true,
     "noProductionSupabaseMutation": true,
+    "noSilentToolUpdate": true,
+    "humanApprovalRequiredForProduction": true,
     "reuseExistingDownloads": true,
-    "useWorktreesForParallelAgents": true
+    "useWorktreesForParallelAgents": true,
+    "externalReposNeverVendoredIntoApplication": true
   }
 }
