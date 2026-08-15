@@ -8,7 +8,8 @@
 ## Cerveau SchoolSafe
 | Date | Version | Référence | État |
 |---|---|---|---|
-| 2026-08-15 | Brain V1 | branche `brain-v1-governance-2026-08-15` | candidat validé, intégration `main` en préparation |
-| 2026-08-15 | Brain V1 validation baseline | `0190316c1224f4bf848f468c698f33cf648c9ce6` | CI Constitution + sécurité workflow PASS |
+| 2026-08-15 | Brain V1 | `6dd2ca7c790970e1b88c3e092f327d9de1c8c43c` | intégré sur `main`, CI post-fusion PASS |
+| 2026-08-15 | Brain V1 construction | branche `brain-v1-governance-2026-08-15` | conservée comme archive de construction |
+| 2026-08-15 | Brain V1 Skills protocol | branche `brain-v1-skills-protocol-2026-08-15` | protocole Skills et mémoire post-intégration en validation |
 
-Après intégration, `main` devient la référence opérationnelle Brain V1. Le commit de production applicative reste enregistré séparément : cerveau et application ne partagent jamais une version implicite.
+Le commit de production applicative reste enregistré séparément : cerveau et application ne partagent jamais une version implicite. Toute évolution du cerveau suit sa propre branche, CI et validation avant intégration.

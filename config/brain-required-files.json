@@ -23,6 +23,7 @@
     "protocols/CHANGE-LIFECYCLE.md",
     "protocols/TRANSFER-PACKAGE.md",
     "protocols/STAGING.md",
+    "protocols/SUPERPOWERS-SKILLS.md",
     "templates/TRANSFER-PACKAGE.template.md",
     "scripts/bootstrap-school-safe-v2.ps1",
     "scripts/validate-brain.ps1",
