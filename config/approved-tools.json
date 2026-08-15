@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "verifiedAt": "2026-08-15",
+  "policy": {
+    "vendorIntoApplication": false,
+    "silentUpdatesAllowed": false,
+    "majorAutoMergeAllowed": false,
+    "humanReviewRequiredForRefChange": true,
+    "humanApprovalRequiredForProduction": true
+  },
+  "tools": [
+    {"name":"superpowers","repository":"https://github.com/obra/superpowers.git","tier":"core","purpose":"Engineering workflow, planning, TDD, debugging, review and verification","approvedRef":"b36e0829c6d0140e93cfef2ca599b1b07d4a7797","refType":"commit","activation":"default"},
+    {"name":"spec-kit","repository":"https://github.com/github/spec-kit.git","tier":"core","purpose":"Specification-driven development","approvedRef":"bf88c9f9a82fa370c7a7257aa2b3cf10b457b65c","refType":"commit","activation":"default"},
+    {"name":"repomix","repository":"https://github.com/yamadashy/repomix.git","tier":"core","purpose":"Repository compression and context packaging","approvedRef":"7bbf052a48e942315deabdf146e62fd0fc1f091a","refType":"commit","activation":"default"},
+    {"name":"orca","repository":"https://github.com/stablyai/orca.git","tier":"core","purpose":"Multi-agent orchestration and isolated worktrees","approvedRef":"c0a775454a29667c3f9fbfeef356e31e1e2acbe0","refType":"commit","activation":"on-multi-agent-work"},
+    {"name":"openhands","repository":"https://github.com/OpenHands/OpenHands.git","tier":"specialist","purpose":"Autonomous software agent for bounded tasks","approvedRef":"bab1baf2de1028c1d4404358448fb6ab3185755d","refType":"commit","activation":"manual-only"},
+    {"name":"aider","repository":"https://github.com/Aider-AI/aider.git","tier":"specialist","purpose":"Targeted agentic code editing","approvedRef":"5dc9490bb35f9729ef2c95d00a19ccd30c26339c","refType":"commit","activation":"manual-only"},
+    {"name":"semgrep","repository":"https://github.com/semgrep/semgrep.git","tier":"security","purpose":"Static security analysis","approvedRef":"stable-release-required","refType":"policy","activation":"security-gate"},
+    {"name":"trivy","repository":"https://github.com/aquasecurity/trivy.git","tier":"security","purpose":"Dependencies, containers and IaC vulnerability scanning","approvedRef":"stable-release-required","refType":"policy","activation":"security-gate"},
+    {"name":"gitleaks","repository":"https://github.com/gitleaks/gitleaks.git","tier":"security","purpose":"Secret leak detection","approvedRef":"stable-release-required","refType":"policy","activation":"security-gate"},
+    {"name":"safe-chain","repository":"https://github.com/AikidoSec/safe-chain.git","tier":"security","purpose":"Supply-chain protection","approvedRef":"stable-release-required","refType":"policy","activation":"security-gate"},
+    {"name":"renovate","repository":"https://github.com/renovatebot/renovate.git","tier":"maintenance","purpose":"Dependency update proposals","approvedRef":"stable-release-required","refType":"policy","activation":"review-only"}
+  ]
+}
