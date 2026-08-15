@@ -4,9 +4,9 @@
 
 **Goal:** Installer dans `medygoo/schoolsafemm` les contrats, conventions d’erreur, configuration, service minimal et chaîne de tests nécessaires avant toute Auth ou donnée réelle.
 
-**Architecture:** F0 crée un service TypeScript indépendant de l’UI, une configuration validée et une CI PR. Il n’accède à aucune donnée métier de production et n’altère pas les écrans SchoolSafe.
+**Architecture:** F0 crée un service TypeScript indépendant de l’UI, une configuration validée et une CI PR. Les tests serveur tournent sur Linux ; les QA Playwright déjà présentes sont rendues bloquantes dans un job Windows qui dispose du chemin Chrome attendu par les scripts existants. F0 n’accède à aucune donnée métier de production et n’altère pas les écrans SchoolSafe.
 
-**Tech Stack:** Node.js, TypeScript, Fastify, Zod, Vitest, GitHub Actions.
+**Tech Stack:** Node.js, TypeScript, Fastify, Zod, Vitest, Playwright existant, GitHub Actions.
 
 ## Global Constraints
 - Branche/worktree isolé depuis le SHA de production vérifié.
@@ -15,6 +15,7 @@
 - Aucun changement visuel dans `app/`.
 - Le test doit échouer avant l’implémentation correspondante.
 - Le lockfile doit être commité après toute installation de dépendance.
+- `app/qa-smoke.cjs`, `app/qa-pwa.cjs` et `app/qa-i18n.cjs` restent les preuves de régression frontend initiales ; ne pas affaiblir leurs assertions pour obtenir du vert.
 
 ---
 
@@ -360,42 +361,88 @@ export type ReadinessProbe = () => Promise<{ ready: boolean; dependency?: string
 - [ ] **Step 3: Vérifier tests 200/503 + typecheck**.
 - [ ] **Step 4: Commit**.
 
-### Task 6: Installer la CI PR sans toucher au déploiement Pages
+### Task 6: Transformer les QA navigateur existantes en gate exécutable
+
+**Files:**
+- Modify: `package.json`
+- Modify: `package-lock.json`
+- Do not weaken: `app/qa-smoke.cjs`, `app/qa-pwa.cjs`, `app/qa-i18n.cjs`
+
+**Interfaces:**
+- Produces `npm run test:e2e:existing` et `npm run test:e2e:staging`.
+
+- [ ] **Step 1: Installer Playwright au workspace racine**
+
+Run:
+```bash
+npm install -D -W playwright
+npm pkg set 'scripts.test:e2e:existing=node app/qa-smoke.cjs && node app/qa-pwa.cjs && node app/qa-i18n.cjs'
+npm pkg set 'scripts.test:e2e:staging=npm run test:e2e:existing'
+```
+
+- [ ] **Step 2: Vérifier localement sur Windows si disponible**
+
+Démarrer :
+```powershell
+Start-Process node -ArgumentList "app/server.mjs"
+$env:SCHOOLSAFE_URL="http://127.0.0.1:4175/"
+npm run test:e2e:existing
+```
+Expected: les QA existantes utilisent le Chrome installé au chemin déjà prévu par les scripts.
+
+- [ ] **Step 3: Ne pas modifier une assertion pour masquer une régression.** Si un test rouge apparaît, utiliser `systematic-debugging` et déterminer s’il s’agit du baseline ou de l’environnement.
+
+- [ ] **Step 4: Commit**
+
+```bash
+git add package.json package-lock.json
+git commit -m "test: make existing SchoolSafe browser QA a required suite"
+```
+
+### Task 7: Installer la CI PR sans toucher au déploiement Pages
 
 **Files:**
 - Create: `.github/workflows/ci.yml`
 - Do not modify: `.github/workflows/static.yml`
 
 **Interfaces:**
-- Produces: gate PR `SchoolSafe CI` exécutant installation, typecheck, tests et vérification secrets basique.
+- Produces deux jobs : `server-contracts` sur Ubuntu et `existing-browser-qa` sur Windows.
 
-- [ ] **Step 1: Vérifier les scripts racine**
+- [ ] **Step 1: Job Linux `server-contracts`**
 
-Run:
-```bash
+Étapes : checkout → setup Node → `npm ci` → `npm run ci` → contrôle secrets. Aucun `pages: write`.
+
+- [ ] **Step 2: Contrôle secrets**
+
+Faire échouer si un fichier suivi contient une affectation non vide de `SUPABASE_SERVICE_ROLE_KEY`, `R2_SECRET_ACCESS_KEY` ou `VAPID_PRIVATE_KEY`. `.env.example` n’en contient pas.
+
+- [ ] **Step 3: Job Windows `existing-browser-qa`**
+
+Étapes PowerShell :
+```powershell
 npm ci
-npm run ci
+Start-Process node -ArgumentList "app/server.mjs"
+Start-Sleep -Seconds 2
+$env:SCHOOLSAFE_URL="http://127.0.0.1:4175/"
+npm run test:e2e:existing
 ```
-Expected: exit 0 après les Tasks 1–5.
+Le job utilise Google Chrome fourni par `windows-latest`, conforme au chemin attendu dans les QA existantes.
 
-- [ ] **Step 2: Créer workflow PR** avec `actions/checkout`, `actions/setup-node`, `npm ci`, `npm run ci`. Aucun `pages: write`, aucun `deploy-pages`.
+- [ ] **Step 4: Vérifier que le workflow ne contient** ni `actions/deploy-pages`, ni `pages: write`, ni secret production.
 
-- [ ] **Step 3: Ajouter le contrôle secrets**
-
-Dans CI, faire échouer si un fichier suivi contient une affectation non vide de `SUPABASE_SERVICE_ROLE_KEY`, `R2_SECRET_ACCESS_KEY` ou `VAPID_PRIVATE_KEY`. `.env.example` ne contient aucune de ces valeurs privées.
-
-- [ ] **Step 4: Commit**
+- [ ] **Step 5: Commit**
 
 ```bash
 git add .github/workflows/ci.yml
-git commit -m "ci: validate SchoolSafe changes before staging"
+git commit -m "ci: validate SchoolSafe before staging"
 ```
 
-- [ ] **Step 5: Ouvrir PR F0 et attendre le résultat GitHub Actions**.
+- [ ] **Step 6: Ouvrir PR F0 et attendre les deux jobs verts.**
 
-### Task 7: Gate F0
+### Task 8: Gate F0
 
 - [ ] Exécuter `npm ci && npm run ci` avec exit 0.
+- [ ] Exécuter `npm run test:e2e:existing` sur environnement Windows/CI avec exit 0.
 - [ ] Vérifier le diff : aucun changement dans `app/index.html`, `app/styles.css`, `app/styles-original.css`, `app/v3-theme.css`, images ou animations.
 - [ ] Vérifier `.github/workflows/static.yml` byte-for-byte inchangé.
 - [ ] Vérifier qu’aucune clé privée n’est suivie par Git.
