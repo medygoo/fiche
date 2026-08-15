@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "authority": "governance/SCHOOLSAFE-LAWS.md",
+  "agents": [
+    {"id":"context-keeper","file":"agents/CONTEXT-KEEPER.md","gate":"continuity-ready"},
+    {"id":"architect","file":"agents/ARCHITECT.md","gate":"architecture-approved"},
+    {"id":"product-workflow","file":"agents/PRODUCT-WORKFLOW.md","gate":"acceptance-criteria-ready"},
+    {"id":"ui-ux","file":"agents/UI-UX.md","gate":"visual-scope-ready"},
+    {"id":"frontend","file":"agents/FRONTEND.md","gate":"frontend-tests-ready"},
+    {"id":"backend-supabase","file":"agents/BACKEND-SUPABASE.md","gate":"backend-contract-ready"},
+    {"id":"database-rls","file":"agents/DATABASE-RLS.md","gate":"migration-review-ready"},
+    {"id":"testing","file":"agents/TESTING.md","gate":"test-evidence-ready"},
+    {"id":"security","file":"agents/SECURITY.md","gate":"security-evidence-ready"},
+    {"id":"performance-accessibility","file":"agents/PERFORMANCE-ACCESSIBILITY.md","gate":"quality-evidence-ready"},
+    {"id":"reviewer","file":"agents/REVIEWER.md","gate":"independent-review-ready"},
+    {"id":"integration","file":"agents/INTEGRATION.md","gate":"transfer-package-ready"}
+  ]
+}

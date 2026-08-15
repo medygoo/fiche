@@ -1,0 +1,28 @@
+name: Validate SchoolSafe Brain
+
+on:
+  push:
+    branches:
+      - main
+      - brain-v1-governance-2026-08-15
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  brain-governance:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate Brain constitution and configuration
+        shell: pwsh
+        run: ./scripts/validate-brain.ps1
+
+      - name: Validate Brain workflow safety
+        shell: pwsh
+        run: ./scripts/validate-workflow-safety.ps1

@@ -1,72 +1,117 @@
-# School Safe V2 — Codex Engineering Pack
+# SchoolSafe Brain V1 — Engineering Pack
 
-Ce dépôt prépare et automatise l’environnement de développement **School Safe V2** autour de Codex.
+Ce dépôt **`medygoo/fiche` est le cerveau central de SchoolSafe V2**. Il conserve les lois, la mémoire opérationnelle, les décisions, le plan maître, les agents spécialisés, les outils approuvés et les protocoles de transfert.
 
-Objectifs :
-- accélérer le développement avec Codex ;
-- organiser plusieurs agents spécialisés en parallèle ;
-- conserver le code School Safe V2 existant ;
-- ajouter design system, tests, sécurité, performance et revue de code ;
-- éviter les installations répétitives sur une connexion lente ;
-- centraliser les instructions d’installation dans un seul dépôt.
+L’application réelle reste séparée dans **`medygoo/schoolsafemm`**.
 
-## Démarrage rapide
-
-Depuis le dossier local de School Safe V2, demande à Codex :
+## Principe
 
 ```text
-Clone le dépôt https://github.com/medygoo/fiche dans C:\SchoolSafe\AI-TOOLS\School-Safe-V2-Pack si nécessaire, lis INSTALL.md puis codex/MASTER-INSTALL-PROMPT.md, et exécute la procédure complète en respectant toutes les règles de sécurité. Ne merge rien dans main, ne push rien et ne déploie rien sans autorisation explicite.
+Demande
+→ Cerveau SchoolSafe
+→ contexte vérifié
+→ spécification
+→ plan
+→ agents spécialisés
+→ tests / sécurité / revue
+→ paquet de transfert
+→ staging de schoolsafemm
+→ validation humaine
+→ production
+→ mise à jour de la mémoire
 ```
 
-Le script PowerShell principal se trouve dans :
+Aucun outil externe et aucun agent n’est autorisé à contourner `governance/SCHOOLSAFE-LAWS.md`.
 
-```text
-scripts/bootstrap-school-safe-v2.ps1
+## Début obligatoire de toute nouvelle conversation
+
+Lire dans cet ordre :
+
+1. `governance/SCHOOLSAFE-LAWS.md`
+2. `00-CONTEXT.md`
+3. `CONTROL-TOWER.md`
+4. `CURRENT-STATE.md`
+5. `HANDOFF.md`
+
+Puis lire seulement les décisions, specs, plans et fichiers utiles à la tâche. Cette règle protège la continuité lorsque la fenêtre de contexte d’un chat devient trop grande.
+
+## Les cerveaux spécialisés
+
+Le catalogue se trouve dans `agents/agent-catalog.json`. Il contient : Context Keeper, Architect, Product/Workflow, UI/UX, Frontend, Backend/Supabase, Database/RLS, Testing, Security, Performance/Accessibility, Reviewer et Integration.
+
+## Outils approuvés
+
+Le registre machine est `config/approved-tools.json`.
+
+### Noyau
+- Superpowers — méthode de développement et vérification.
+- GitHub Spec Kit — spécifications.
+- Repomix — compression ciblée du contexte.
+- Orca — orchestration multi-agents/worktrees, activée quand nécessaire.
+
+### Spécialistes manuels
+- OpenHands.
+- Aider.
+
+### Sécurité / maintenance
+- Semgrep.
+- Trivy.
+- Gitleaks.
+- Aikido Safe Chain.
+- Renovate avec revue humaine.
+
+Les outils core sont épinglés à un commit approuvé. Aucun changement silencieux de référence n’est autorisé.
+
+## Installation sûre
+
+Le bootstrap ne modifie **aucune dépendance de l’application par défaut**.
+
+Prévisualiser :
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\bootstrap-school-safe-v2.ps1 -TargetProject "C:\SchoolSafe\schoolsafe-v2" -DryRun
 ```
 
-## Outils couverts
+Installer uniquement le noyau léger :
 
-### Agents / méthode
-- OpenAI Codex
-- GitHub Spec Kit
-- Superpowers
-- Repomix
-- Agent Orchestrator
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\bootstrap-school-safe-v2.ps1 -TargetProject "C:\SchoolSafe\schoolsafe-v2"
+```
 
-### Design / Frontend
-- shadcn/ui
-- Magic UI
-- Storybook
-- TanStack Query
-- Zod
-- React Hook Form
-- Biome
+Ajouter Orca seulement pour le multi-agent :
 
-### Tests
-- Playwright
-- Vitest
-- MSW
-- axe-core
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\bootstrap-school-safe-v2.ps1 -TargetProject "C:\SchoolSafe\schoolsafe-v2" -InstallMultiAgent
+```
 
-### Sécurité
-- Semgrep
-- Trivy
-- Betterleaks
-- Aikido Safe Chain
+`-InstallSpecialists`, `-InstallSecurity` et `-InstallProjectDependencies` sont des options explicites ; elles ne sont jamais activées automatiquement.
 
-### Performance / maintenance
-- Lighthouse CI
-- Renovate
+## Validation du cerveau
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\validate-brain.ps1
+```
+
+Le validateur contrôle notamment les fichiers obligatoires, les JSON, les quatre outils core épinglés et l’obligation de validation humaine avant production.
+
+## Documents de gouvernance
+
+- `governance/SCHOOLSAFE-LAWS.md` — Loi 0 + Six Lois.
+- `governance/RELEASE-GATES.md` — gates avant production.
+- `governance/VERSION-REGISTRY.md` — commits stables.
+- `governance/TOOL-RISK-REGISTER.md` — risques des outils externes.
+- `protocols/CHANGE-LIFECYCLE.md` — flux complet d’un changement.
+- `protocols/TRANSFER-PACKAGE.md` — contrat de transfert.
+- `protocols/STAGING.md` — passage obligatoire par staging.
 
 ## Règles absolues
 
-- ne jamais écraser les modifications locales existantes ;
-- ne jamais utiliser `git reset --hard` ;
-- ne jamais forcer un push ;
-- ne jamais déployer automatiquement ;
-- ne jamais toucher à Supabase/VPS de production pendant l’installation ;
-- utiliser des branches/worktrees isolés pour les agents parallèles ;
-- vérifier chaque installation avant de continuer ;
-- réutiliser les outils déjà présents au lieu de les installer deux fois.
+- ne jamais confondre le cerveau et l’application ;
+- ne jamais travailler directement sur `main` pour un changement important ;
+- ne jamais force-push ou utiliser `git reset --hard` pour écraser du travail ;
+- ne jamais commiter de secret ;
+- ne jamais muter Supabase/VPS/production sans autorisation explicite ;
+- ne jamais déclarer un travail terminé sans preuve ;
+- ne jamais publier `schoolsafemm` sans validation humaine explicite.
 
-Voir `INSTALL.md` pour la procédure complète.
+Voir `INSTALL.md` et `codex/MASTER-INSTALL-PROMPT.md` pour l’utilisation avec Codex/Claude et les environnements locaux.

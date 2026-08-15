@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "requiredFiles": [
+    "00-CONTEXT.md",
+    "CONTROL-TOWER.md",
+    "CURRENT-STATE.md",
+    "DECISIONS.md",
+    "MASTER-PLAN.md",
+    "HANDOFF.md",
+    "README.md",
+    "AGENTS.template.md",
+    "INSTALL.md",
+    "codex/MASTER-INSTALL-PROMPT.md",
+    "governance/SCHOOLSAFE-LAWS.md",
+    "governance/TOOL-RISK-REGISTER.md",
+    "governance/VERSION-REGISTRY.md",
+    "governance/RELEASE-GATES.md",
+    "agents/agent-catalog.json",
+    "config/approved-tools.json",
+    "config/tools-manifest.json",
+    "protocols/START-CHAT.md",
+    "protocols/END-CHAT.md",
+    "protocols/CHANGE-LIFECYCLE.md",
+    "protocols/TRANSFER-PACKAGE.md",
+    "protocols/STAGING.md",
+    "templates/TRANSFER-PACKAGE.template.md",
+    "scripts/bootstrap-school-safe-v2.ps1",
+    "scripts/validate-brain.ps1",
+    "scripts/validate-workflow-safety.ps1",
+    ".github/workflows/brain-validation.yml"
+  ]
+}
