@@ -1,4 +1,4 @@
-﻿import { createHmac, timingSafeEqual } from "node:crypto";
+import { createHmac, timingSafeEqual } from "node:crypto";
 
 export const JASPE_REPLAY_WINDOW_SECONDS = 300;
 

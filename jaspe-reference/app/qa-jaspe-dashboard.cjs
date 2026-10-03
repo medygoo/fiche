@@ -1,4 +1,4 @@
-﻿/* Existing Chrome only: desktop/mobile panel, lifecycle, conversation and audio. */
+/* Existing Chrome only: desktop/mobile panel, lifecycle, conversation and audio. */
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
