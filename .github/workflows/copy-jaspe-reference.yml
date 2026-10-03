@@ -1,0 +1,71 @@
+name: Copy JASPE Reference
+
+on:
+  workflow_dispatch:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: write
+
+jobs:
+  copy-jaspe:
+    if: github.event_name == 'workflow_dispatch' || github.event.issue.title == 'COPY_JASPE_REFERENCE'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout fiche
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Clone SchoolSafe prepared branch
+        run: |
+          git clone --depth 1 --branch bolt/schoolsafe-work-v1 https://github.com/medygoo/schoolsafe-stable.git /tmp/schoolsafe
+
+      - name: Copy JASPE reference without touching existing fiche content
+        run: |
+          set -e
+          rm -rf jaspe-reference
+          mkdir -p jaspe-reference/app/assets jaspe-reference/app/modules jaspe-reference/docs/design jaspe-reference/server/src jaspe-reference/server/tests
+
+          rsync -a /tmp/schoolsafe/app/assets/jaspe2d/ jaspe-reference/app/assets/jaspe2d/
+          rsync -a /tmp/schoolsafe/app/modules/jaspe2d/ jaspe-reference/app/modules/jaspe2d/
+          rsync -a /tmp/schoolsafe/worker-jaspe/ jaspe-reference/worker-jaspe/
+
+          for d in /tmp/schoolsafe/docs/design/jaspe-*; do
+            [ -d "$d" ] || continue
+            rsync -a "$d" "jaspe-reference/docs/design/"
+          done
+
+          if [ -d /tmp/schoolsafe/server/src/jaspenative ]; then
+            rsync -a /tmp/schoolsafe/server/src/jaspenative/ jaspe-reference/server/src/jaspenative/
+          fi
+
+          cd /tmp/schoolsafe
+          find app server docs -type f -iname '*jaspe*' -print0 | while IFS= read -r -d '' f; do
+            target="$GITHUB_WORKSPACE/jaspe-reference/$f"
+            mkdir -p "$(dirname "$target")"
+            cp -f "$f" "$target"
+          done
+
+          SOURCE_SHA="$(git rev-parse HEAD)"
+          cd "$GITHUB_WORKSPACE"
+          cat > jaspe-reference/README.md <<EOF
+          # JASPE reference copy
+
+          Source repository: medygoo/schoolsafe-stable
+          Source branch: bolt/schoolsafe-work-v1
+          Source SHA: $SOURCE_SHA
+
+          This directory is a reference copy of the JASPE assets, design references,
+          implementation files, worker and JASPE-specific tests. Existing files in
+          medygoo/fiche are not replaced by this copy.
+          EOF
+
+      - name: Commit JASPE reference
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add jaspe-reference
+          git commit -m "chore: add JASPE reference copy"
+          git push origin HEAD:main
